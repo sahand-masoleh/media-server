@@ -3,7 +3,7 @@
 	"version": "1.0.0",
 	"main": "index.js",
 	"scripts": {
-		"start": "nodemon dist/app.js",
+		"start": "node dist/app.js",
 		"dev": "nodemon -r dotenv/config dist/app.js"
 	},
 	"repository": {
@@ -30,5 +30,10 @@
 		"dotenv": "^16.0.3",
 		"nodemon": "^2.0.20"
 	},
-	"type": "module"
+	"type": "module",
+	"_moduleAliases": {
+		"@": ".",
+		"@/db": "./db",
+		"@/routes": "./routes"
+	}
 }

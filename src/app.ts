@@ -32,6 +32,10 @@ app.get("/", (req, res) => {
 	res.send("nothing to see here");
 });
 
+/** */
+import productsRoute from "./routes/products.js";
+app.use("/api/products", productsRoute);
+
 /** not found */
 
 app.use((req, res) => {
@@ -41,6 +45,7 @@ app.use((req, res) => {
 
 /** error handler */
 
+// TODO: custom error with status
 interface Errorable {
 	status: number;
 	message: string;
