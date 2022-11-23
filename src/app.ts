@@ -2,9 +2,11 @@ const { PORT, NODE_ENV, ORIGIN } = process.env;
 
 import express, { ErrorRequestHandler } from "express";
 const app = express();
+// app.use(express.json());
+// app.use(express.urlencoded({ extended: true }));
+
 import { fileURLToPath } from "url";
 import path, { dirname } from "path";
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 

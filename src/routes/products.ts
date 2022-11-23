@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { response, Router } from "express";
 import { QueryResult } from "pg";
 export const router = Router();
 
@@ -25,7 +25,7 @@ type Item = Pick<Productable, "id" | "name" | "cover" | "slices" | "price"> & {
 	hero: string | null;
 };
 
-router.get("/", async (req, res, next) => {
+router.get("/list-all", async (req, res, next) => {
 	try {
 		const response: QueryResult<Item> = await db.query(
 			`
@@ -45,12 +45,12 @@ router.get("/", async (req, res, next) => {
 
 /* list of items for getStaticPaths */
 
-type Path = Pick<Productable, "name">;
+type Path = Pick<Productable, "id" | "name">;
 
-router.get("/paths", async (req, res, next) => {
+router.get("/list-paths", async (req, res, next) => {
 	try {
 		const response: QueryResult<Path> = await db.query(
-			"SELECT name FROM products"
+			"SELECT id, name FROM products"
 		);
 		res.json(response.rows);
 	} catch (error) {
@@ -62,15 +62,15 @@ router.get("/paths", async (req, res, next) => {
 
 type Food = Pick<
 	Productable,
-	"type" | "price" | "description" | "source" | "noface" | "images"
+	"id" | "type" | "price" | "description" | "source" | "noface" | "images"
 >;
 
-router.get("/:food", async (req, res, next) => {
+router.get("/single/:food", async (req, res, next) => {
 	const { food } = req.params || {};
 	try {
 		const response: QueryResult<Food> = await db.query(
 			`
-			SELECT type, price, description, source, noface, images
+			SELECT id, type, price, description, source, noface, images
 			FROM products
 			WHERE name = $1
 			`,
@@ -82,6 +82,33 @@ router.get("/:food", async (req, res, next) => {
 		} else {
 			throw new Error("food not found");
 		}
+	} catch (error) {
+		next(error);
+	}
+});
+
+/* list of items for checkout */
+
+type CartItem = Pick<Productable, "name" | "price"> & { image: string };
+
+router.get("/list-cart", async (req, res, next) => {
+	let ids = req.query.id as string | string[];
+
+	/* make sure ids is always an array as single params are not put in arrays by default */
+	if (!Array.isArray(ids)) {
+		ids = [ids];
+	}
+
+	try {
+		const response: QueryResult<CartItem[]> = await db.query(
+			`
+			SELECT name, price, images[1]
+			FROM products
+			WHERE id = ANY($1)
+			`,
+			[ids]
+		);
+		res.json(response.rows);
 	} catch (error) {
 		next(error);
 	}
