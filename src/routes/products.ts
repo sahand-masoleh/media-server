@@ -89,7 +89,7 @@ router.get("/single/:food", async (req, res, next) => {
 
 /* list of items for checkout */
 
-type CartItem = Pick<Productable, "name" | "price"> & { image: string };
+type CartItem = Pick<Productable, "id" | "name" | "price" | "cover">;
 
 router.get("/list-cart", async (req, res, next) => {
 	let ids = req.query.id as string | string[];
@@ -102,7 +102,7 @@ router.get("/list-cart", async (req, res, next) => {
 	try {
 		const response: QueryResult<CartItem[]> = await db.query(
 			`
-			SELECT name, price, images[1]
+			SELECT id, name, price, cover
 			FROM products
 			WHERE id = ANY($1)
 			`,
