@@ -2,8 +2,6 @@ const { PORT, NODE_ENV, ORIGIN } = process.env;
 
 import express, { ErrorRequestHandler } from "express";
 const app = express();
-// app.use(express.json());
-// app.use(express.urlencoded({ extended: true }));
 
 import { fileURLToPath } from "url";
 import path, { dirname } from "path";
@@ -25,18 +23,13 @@ app.use(
 );
 
 /** serve static files */
-app.use("/media", express.static(path.join(__dirname, "../media")));
+app.use("/media", express.static(path.join(__dirname, "/media")));
 
 /** root route */
 
 app.get("/", (req, res) => {
-	// TODO: serve the frontend in production
 	res.send("nothing to see here");
 });
-
-/** */
-import productsRoute from "./routes/products.js";
-app.use("/api/products", productsRoute);
 
 /** not found */
 
@@ -72,5 +65,7 @@ app.use(errorHandler);
 /** start the server */
 
 app.listen(PORT, () => {
-	console.log(`listening on port ${PORT}`);
+	if (NODE_ENV === "development") {
+		console.log(`listening on port ${PORT}`);
+	}
 });

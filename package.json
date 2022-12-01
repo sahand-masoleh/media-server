@@ -1,31 +1,28 @@
 {
-	"name": "food-shop-backend",
+	"name": "media-server",
 	"version": "1.0.0",
 	"main": "dist/index.js",
 	"scripts": {
-		"start": "node dist/index.js",
-		"dev": "nodemon -r dotenv/config dist/index.js"
+		"start": "node index.js",
+		"dev": "nodemon -r dotenv/config index.js"
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+ssh://git@github.com/sahand-masoleh/food-shop-backend.git",
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"url": "git+ssh://git@github.com:sahand-masoleh/media-server.git"
 	},
 	"author": "Sahand Masoleh",
 	"license": "ISC",
 	"bugs": {
-		"url": "https://github.com/sahand-masoleh/food-shop-backend/issues"
+		"url": "https://github.com/sahand-masoleh/media-server/issues"
 	},
 	"dependencies": {
 		"cors": "^2.8.5",
-		"express": "^4.18.2",
-		"pg": "^8.8.0"
+		"express": "^4.18.2"
 	},
 	"devDependencies": {
 		"@types/cors": "^2.8.12",
 		"@types/express": "^4.17.14",
 		"@types/node": "^18.11.9",
-		"@types/pg": "^8.6.5",
 		"dotenv": "^16.0.3",
 		"nodemon": "^2.0.20"
 	},
